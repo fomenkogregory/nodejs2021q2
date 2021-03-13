@@ -1,6 +1,6 @@
-const fs = require("fs");
-const csvtojson = require("csvtojson");
-const readline = require("readline");
+import fs from "fs";
+import csvtojson from "csvtojson";
+import readline from "readline";
 
 const readFile = "./task1/nodejs-hw1-ex1.csv";
 const writeFile = "./task1/result.txt";
