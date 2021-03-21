@@ -4,7 +4,7 @@ import { User } from './user';
 import { UsersDatabase } from './users.database';
 
 export class UsersController {
-    readonly API_PREFIX = '/users';
+    readonly PREFIX = '/users';
 
     constructor(private readonly db: UsersDatabase) {}
 
