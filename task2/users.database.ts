@@ -12,8 +12,13 @@ export class UsersDatabase {
         return this.users.find((user) => user.id === +id);
     }
 
-    updateOne(id: string, updatedUserFields: Partial<User>): User {
+    updateOne(id: string, updatedUserFields: Partial<User>): User | undefined {
         const index = this.users.findIndex((user) => user.id === +id);
+
+        if (index === -1) {
+            return;
+        }
+
         this.users[index] = { ...this.users[index], ...updatedUserFields };
 
         return this.users[index];
