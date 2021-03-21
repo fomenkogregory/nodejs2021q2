@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import Joi, { ValidationError } from 'joi';
 import { StatusCodes } from './status-codes';
 import { User } from './user';
 import { UsersDatabase } from './users.database';
@@ -7,10 +6,7 @@ import { UsersDatabase } from './users.database';
 export class UsersController {
     readonly PREFIX = '/users';
 
-    constructor(
-        private readonly db: UsersDatabase,
-        private readonly schema: Joi.ObjectSchema<User>
-    ) {}
+    constructor(private readonly db: UsersDatabase) {}
 
     getAll = (req: Request, res: Response) => {
         res.send(this.db.getAll());
@@ -27,19 +23,10 @@ export class UsersController {
         }
     };
 
-    createUser = async (req: Request, res: Response) => {
-        try {
-            const validationResult = await this.schema.validateAsync<User>(
-                req.body
-            );
-            const user = this.db.createOne(validationResult);
+    createUser = async (req: Request<{}, {}, User>, res: Response) => {
+        const user = this.db.createOne(req.body);
 
-            res.status(StatusCodes.Created).send(user);
-        } catch (error) {
-            res.status(StatusCodes.BadRequest).send(
-                (error as ValidationError).details[0].message
-            );
-        }
+        res.status(StatusCodes.Created).send(user);
     };
 
     updateUser = (
