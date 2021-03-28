@@ -35,7 +35,7 @@ export class UsersDatabase {
     }
 
     getAutoSuggestUsers(loginSubstring: string, limit: string): User[] {
-        return [...this.users]
+        return this.users
             .filter((user) => user.login.includes(loginSubstring))
             .sort((userA, userB) => (userA.login > userB.login ? 1 : -1))
             .slice(0, +limit);
