@@ -6,7 +6,10 @@
   "scripts": {
     "task1.1": "nodemon --exec babel-node ./task1/task1.1.js",
     "task1.2": "nodemon --exec babel-node ./task1/task1.2.js",
-    "task2": "nodemon --exec ts-node ./task2/index.ts"
+    "task2": "nodemon --exec ts-node ./task2/index.ts",
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "heroku:local": "tsc && heroku local web"
   },
   "repository": {
     "type": "git",
@@ -22,7 +25,9 @@
   "dependencies": {
     "csvtojson": "^2.0.10",
     "express": "^4.17.1",
-    "joi": "^17.4.0"
+    "joi": "^17.4.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -34,8 +39,6 @@
     "@typescript-eslint/parser": "^4.18.0",
     "eslint": "^7.22.0",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "prettier": "^2.2.1"
   }
 }
