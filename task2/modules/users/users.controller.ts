@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { StatusCodes } from './status-codes';
+import { StatusCodes } from '../../types/status-codes';
 import { User } from './user';
 import { UsersDatabase } from './users.database';
 

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { sequelize } from './sequelize';
+import { sequelize } from '../../bootstrap/sequelize';
 import { User } from './user';
 
 export class UserModel extends Model<User> {}

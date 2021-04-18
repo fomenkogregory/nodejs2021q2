@@ -1,7 +1,7 @@
 import { User } from './user';
 import { UserModel } from './user.model';
 import { Op } from 'sequelize';
-import { Order } from './order';
+import { Order } from '../../types/order';
 
 export class UsersDatabase {
     async getAll(): Promise<UserModel[]> {
