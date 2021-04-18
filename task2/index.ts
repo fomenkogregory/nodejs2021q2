@@ -16,6 +16,12 @@ const controller = new UsersController(new UsersDatabase());
 
 app.use(express.json());
 
+app.route('/').get((req, res) => {
+    res.send(
+        `<style>a {color: #ef5b25; font-weight: 600; text-decoration: none;}</style><a href="${process.env.API_DOCS_URL}" target="_blank">Documentation page</a>`
+    );
+});
+
 app.route(controller.PREFIX)
     .get(controller.getAll)
     .post(Validator.validateAsync(userRequiredSchema), controller.createUser);
