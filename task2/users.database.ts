@@ -1,43 +1,38 @@
-import { USERS_MOCK } from './mocks';
 import { User } from './user';
+import { UserModel } from './user.model';
+import { Op } from 'sequelize';
+import { Order } from './order';
 
 export class UsersDatabase {
-    private readonly users: User[] = USERS_MOCK;
-
-    getAll(): User[] {
-        return this.users;
+    async getAll(): Promise<UserModel[]> {
+        return await UserModel.findAll();
     }
 
-    findOne(id: string): User | undefined {
-        return this.users.find((user) => user.id === +id);
+    async findOne(id: string): Promise<UserModel | null> {
+        return await UserModel.findOne({ where: { id: +id } });
     }
 
-    updateOne(id: string, updatedUserFields: Partial<User>): User | undefined {
-        const index = this.users.findIndex((user) => user.id === +id);
-
-        if (index === -1) {
-            return;
-        }
-
-        this.users[index] = { ...this.users[index], ...updatedUserFields };
-
-        return this.users[index];
+    async updateOne(
+        id: string,
+        fields: Partial<User>
+    ): Promise<UserModel | undefined> {
+        const record = await this.findOne(id);
+        return await record?.update(fields);
     }
 
-    createOne(user: User): User {
-        this.users.push(user);
-
-        return user;
+    async createOne(user: User): Promise<UserModel> {
+        return await UserModel.create(user);
     }
 
-    deleteOne(id: string): void {
-        this.updateOne(id, { isDeleted: true });
+    async deleteOne(id: string): Promise<UserModel | undefined> {
+        return await this.updateOne(id, { isDeleted: true });
     }
 
-    getAutoSuggestUsers(loginSubstring: string, limit: string): User[] {
-        return this.users
-            .filter((user) => user.login.includes(loginSubstring))
-            .sort((userA, userB) => (userA.login > userB.login ? 1 : -1))
-            .slice(0, +limit);
+    async getAutoSuggestUsers(loginSubstring: string, limit: string) {
+        return await UserModel.findAll({
+            where: { login: { [Op.iLike]: `%${loginSubstring}%` } },
+            order: [['login', Order.Desc]],
+            limit: +limit
+        });
     }
 }
