@@ -1,12 +1,15 @@
-import { UsersController } from './users.controller';
-import { UsersDatabase } from './users.database';
 import { app } from '../../bootstrap/app';
 import { Validator } from '../../helpers/validator';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { UsersDatabase } from './users.database';
 import { userPartialSchema, userRequiredSchema } from './user.schema';
 
 export class UsersModule {
     static init(): void {
-        const controller = new UsersController(new UsersDatabase());
+        const controller = new UsersController(
+            new UsersService(new UsersDatabase())
+        );
 
         app.route(controller.PREFIX)
             .get(controller.getAll)
