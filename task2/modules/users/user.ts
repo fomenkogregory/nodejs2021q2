@@ -3,5 +3,5 @@ export interface User {
     login: string;
     password: string;
     age: number;
-    isDeleted?: boolean;
+    isDeleted: boolean;
 }

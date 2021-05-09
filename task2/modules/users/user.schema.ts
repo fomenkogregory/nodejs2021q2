@@ -2,7 +2,6 @@ import Joi from 'joi';
 import { User } from './user';
 
 const userJoiObject = {
-    id: Joi.number(),
     login: Joi.string(),
     age: Joi.number().min(4).max(130),
     password: Joi.string()

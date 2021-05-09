@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
-import { StatusCodes } from './status-codes';
+import { StatusCodes } from '../../types/status-codes';
 import { User } from './user';
-import { UsersDatabase } from './users.database';
+import { UsersService } from './users.service';
 
 export class UsersController {
     readonly PREFIX = '/users';
 
-    constructor(private readonly db: UsersDatabase) {}
+    constructor(private readonly service: UsersService) {}
 
-    getAll = (req: Request, res: Response) => {
-        res.send(this.db.getAll());
+    getAll = async (req: Request, res: Response) => {
+        res.send(await this.service.getAll());
     };
 
-    getUser = (req: Request<UserReqParams>, res: Response) => {
+    getUser = async (req: Request<UserReqParams>, res: Response) => {
         const { id } = req.params;
-        const user = this.db.findOne(id);
+        const user = await this.service.getUser(id);
 
         if (user) {
             res.send(user);
@@ -23,18 +23,19 @@ export class UsersController {
         }
     };
 
-    createUser = async (req: Request<{}, {}, User>, res: Response) => {
-        const user = this.db.createOne(req.body);
+    createUser = async ({ body }: Request<{}, {}, User>, res: Response) => {
+        const user = await this.service.createUser(body);
 
         res.status(StatusCodes.Created).send(user);
     };
 
-    updateUser = (
+    updateUser = async (
         req: Request<UserReqParams, {}, Partial<User>>,
         res: Response
     ) => {
-        const { id } = req.params;
-        const user = this.db.updateOne(id, req.body);
+        const { body, params } = req;
+        const { id } = params;
+        const user = await this.service.updateUser(id, body);
 
         if (user) {
             res.send(user);
@@ -43,18 +44,22 @@ export class UsersController {
         }
     };
 
-    deleteUser = (req: Request<UserReqParams>, res: Response) => {
-        this.db.deleteOne(req.params.id);
+    deleteUser = async (req: Request<UserReqParams>, res: Response) => {
+        const { id } = req.params;
+        await this.service.deleteUser(id);
 
         res.status(StatusCodes.NoContent).send();
     };
 
-    getAutoSuggestUsers = (
+    getAutoSuggestUsers = async (
         req: Request<{}, {}, {}, AutoSuggestQueryParams>,
         res: Response
     ) => {
         const { loginSubstring, limit } = req.query;
-        const users = this.db.getAutoSuggestUsers(loginSubstring, limit);
+        const users = await this.service.getAutoSuggestUsers(
+            loginSubstring,
+            limit
+        );
 
         res.send(users);
     };

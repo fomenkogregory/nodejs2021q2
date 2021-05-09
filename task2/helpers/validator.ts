@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { StatusCodes } from './status-codes';
+import { StatusCodes } from '../types/status-codes';
 import { ValidationError, ObjectSchema } from 'joi';
 
 export class Validator {
