@@ -4,9 +4,10 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UsersDatabase } from './users.database';
 import { userPartialSchema, userRequiredSchema } from './user.schema';
+import { Module } from '../../types/module';
 
-export class UsersModule {
-    static init(): void {
+export class UsersModule implements Module {
+    public init(): void {
         const controller = new UsersController(
             new UsersService(new UsersDatabase())
         );

@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { User } from './user';
+import { JoiHelper } from '../../helpers/joi-helper';
 
 const userJoiObject = {
     login: Joi.string(),
@@ -9,12 +10,7 @@ const userJoiObject = {
         .regex(/[0-9]/)
 };
 
-const makeAllKeysRequired = (object: Record<string, Joi.AnySchema>) =>
-    Object.fromEntries(
-        Object.entries(object).map(([key, value]) => [key, value.required()])
-    );
-
 export const userRequiredSchema = Joi.object<User>(
-    makeAllKeysRequired(userJoiObject)
+    JoiHelper.makeAllKeysRequired(userJoiObject)
 );
 export const userPartialSchema = Joi.object<User>(userJoiObject);
