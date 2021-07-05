@@ -4,7 +4,9 @@ dotenv.config();
 
 import { app } from './bootstrap/app';
 import { sequelize } from './bootstrap/sequelize';
+import { GroupsModule } from './modules/groups';
 import { UsersModule } from './modules/users';
+import { Module } from './types/module';
 
 app.route('/').get((req, res) => {
     res.send(
@@ -12,7 +14,9 @@ app.route('/').get((req, res) => {
     );
 });
 
-UsersModule.init();
+const modules: Module[] = [new UsersModule(), new GroupsModule()];
+
+modules.forEach((module) => module.init());
 
 const port = process.env.PORT ?? 5000;
 
